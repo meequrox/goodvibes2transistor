@@ -22,4 +22,4 @@ target_link_libraries(g2t tinyxml2::tinyxml2)
 set_target_properties(g2t PROPERTIES LINK_FLAGS_RELEASE -s)
 
 install(TARGETS g2t
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} ${TINYXML2_LIBRARY})
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})

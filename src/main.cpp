@@ -1,7 +1,10 @@
 #include <iostream>
 
+#include "ConfigReader.hpp"
+
 int main() {
-    std::cout << "Hello World!" << std::endl;
+    ConfigReader cr;
+    cr.print();
 
     return 0;
 }

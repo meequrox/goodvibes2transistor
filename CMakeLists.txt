@@ -9,8 +9,10 @@ add_executable(g2t src/main.cpp)
 
 target_sources(g2t PRIVATE
     # Headers
+    src/config_reader.hpp
 
     # Sources
+    src/config_reader.cpp
 )
 
 set_target_properties(g2t PROPERTIES LINK_FLAGS_RELEASE -s)

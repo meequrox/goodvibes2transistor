@@ -5,7 +5,7 @@
 int main() {
     ConfigReader cr(std::string("/home/") + std::getenv("USER") +
                     "/.local/share/goodvibes/stations.xml");
-    cr.print();
+    cr.printStations();
 
     return 0;
 }

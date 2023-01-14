@@ -13,23 +13,9 @@ class ConfigReader {
     XMLElement* stations;
 
    public:
-    ConfigReader(std::string path) {
-        doc.LoadFile(path.c_str());
-        stations = doc.FirstChildElement("Stations");
-    }
+    ConfigReader(std::string path);
 
-    void print() {
-        XMLElement* station = stations->FirstChildElement("Station");
-
-        while (station) {
-            XMLText* name = station->FirstChildElement("name")->FirstChild()->ToText();
-            XMLText* uri = station->FirstChildElement("uri")->FirstChild()->ToText();
-
-            std::cout << name->Value() << ": " << uri->Value() << std::endl;
-
-            station = station->NextSiblingElement("Station");
-        }
-    }
+    void printStations();
 };
 
 #endif  // CONFIG_READER_HPP

@@ -1,4 +1,0 @@
-#ifndef CONFIG_READER_HPP
-#define CONFIG_READER_HPP
-
-#endif // CONFIG_READER_HPP

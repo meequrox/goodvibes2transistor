@@ -13,9 +13,7 @@ class ConfigReader {
     XMLElement* stations;
 
    public:
-    ConfigReader() {
-        std::string path =
-            std::string("/home/") + std::getenv("USER") + "/.local/share/goodvibes/stations.xml";
+    ConfigReader(std::string path) {
         doc.LoadFile(path.c_str());
         stations = doc.FirstChildElement("Stations");
     }

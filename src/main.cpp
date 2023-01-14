@@ -3,7 +3,8 @@
 #include "ConfigReader.hpp"
 
 int main() {
-    ConfigReader cr;
+    ConfigReader cr(std::string("/home/") + std::getenv("USER") +
+                    "/.local/share/goodvibes/stations.xml");
     cr.print();
 
     return 0;

@@ -1,8 +1,15 @@
 #include "ConfigReader.hpp"
 
+#include <exception>
 #include <iostream>
 
-ConfigReader::ConfigReader(std::string path) {
+#include "../include/mime-types/mime_mapper.hpp"
+
+ConfigReader::ConfigReader(std::string path) noexcept(false) {
+    if (mime_types::get_type(path) != "application/xml") {
+        throw std::invalid_argument(path + " is not an XML file");
+    }
+
     doc.LoadFile(path.c_str());
     stations = doc.FirstChildElement("Stations");
 }

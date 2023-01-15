@@ -15,8 +15,12 @@ int main(int argc, char** argv) {
     app.add_option("-i", configPath, "stations.xml file path")->check(CLI::ExistingPath)->required();
     CLI11_PARSE(app, argc, argv);
 
-    ConfigReader cr(configPath);
-    cr.printStations();
+    try {
+        ConfigReader cr(configPath);
+        cr.printStations();
+    } catch (const std::invalid_argument& e) {
+        std::cout << e.what() << ", exitting..." << std::endl;
+    }
 
     return 0;
 }

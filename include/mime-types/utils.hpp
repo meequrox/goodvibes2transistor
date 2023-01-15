@@ -50,7 +50,7 @@ std::string inline get_extension_from_path(const std::string &path) {
   return boost::filesystem::extension(path);
 #else
   std::filesystem::path filePath = path;
-  return filePath.extension().generic_u8string();
+  return filePath.extension();
 #endif
 }
 

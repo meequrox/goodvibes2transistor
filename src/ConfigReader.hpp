@@ -3,14 +3,12 @@
 
 #include <tinyxml2.h>
 
-#include <iostream>
-
-using namespace tinyxml2;
+#include <string>
 
 class ConfigReader {
    private:
-    XMLDocument doc;
-    XMLElement* stations;
+    tinyxml2::XMLDocument doc;
+    tinyxml2::XMLElement* stations;
 
    public:
     ConfigReader(std::string path);

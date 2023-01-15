@@ -8,7 +8,7 @@
 class Converter {
    private:
     const ConfigReader& configReader;
-    nlohmann::json jsonMap;
+    nlohmann::json configJSON;
 
    public:
     Converter(const ConfigReader& _configReader);

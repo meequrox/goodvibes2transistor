@@ -9,7 +9,12 @@ find_package(TinyXML2 REQUIRED)
 find_package(CLI11 CONFIG REQUIRED)
 
 set(JSON_BuildTests OFF)
-find_package(nlohmann_json 3.11.2 REQUIRED)
+find_package(nlohmann_json 3.9.0 REQUIRED)
+
+# uuid.h library
+find_path(LIBUUID_INCLUDE_DIR uuid.h PATH_SUFFIXES uuid)
+find_library(LIBUUID_LIBRARY libuuid.so)
+include_directories(${LIBUUID_INCLUDE_DIR})
 
 add_executable(g2t src/main.cpp)
 
@@ -23,9 +28,9 @@ target_sources(g2t PRIVATE
     src/Converter.cpp
 )
 
-target_link_libraries(g2t tinyxml2::tinyxml2 CLI11::CLI11 nlohmann_json::nlohmann_json)
+target_link_libraries(g2t PRIVATE tinyxml2::tinyxml2 CLI11::CLI11 nlohmann_json::nlohmann_json ${LIBUUID_LIBRARY})
 
-# Use MimeTypes header-only library (https://github.com/LonghronShen/MimeTypes)
+# MimeTypes header-only library (https://github.com/LonghronShen/MimeTypes)
 target_compile_definitions(g2t PUBLIC MIME_TYPES_HEADER_ONLY=1)
 
 set_target_properties(g2t PROPERTIES LINK_FLAGS_RELEASE -s)

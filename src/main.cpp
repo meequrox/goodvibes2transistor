@@ -20,6 +20,8 @@ int main(int argc, char** argv) {
         ConfigReader cr(configPath);
         cr.printStations();
 
+        std::cout << std::endl;
+
         Converter converter(cr);
         converter.dumpJSON();
 

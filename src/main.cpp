@@ -18,6 +18,7 @@ int main(int argc, char** argv) {
     try {
         ConfigReader cr(configPath);
         cr.printStations();
+
     } catch (const std::invalid_argument& e) {
         std::cout << e.what() << ", exitting..." << std::endl;
     }

@@ -14,15 +14,26 @@ ConfigReader::ConfigReader(std::string path) noexcept(false) {
     stations = doc.FirstChildElement("Stations");
 }
 
-void ConfigReader::printStations() {
+ConfigReader::stationsList ConfigReader::getStationsList() {
+    stationsList v;
     tinyxml2::XMLElement* station = stations->FirstChildElement("Station");
 
     while (station) {
         tinyxml2::XMLText* name = station->FirstChildElement("name")->FirstChild()->ToText();
         tinyxml2::XMLText* uri = station->FirstChildElement("uri")->FirstChild()->ToText();
 
-        std::cout << name->Value() << ": " << uri->Value() << std::endl;
+        v.push_back(std::make_pair(name->Value(), uri->Value()));
 
         station = station->NextSiblingElement("Station");
+    }
+
+    return v;
+}
+
+void ConfigReader::printStations() {
+    stationsList stations = this->getStationsList();
+
+    for (const auto& pair : stations) {
+        std::cout << pair.first << ": " << pair.second << std::endl;
     }
 }

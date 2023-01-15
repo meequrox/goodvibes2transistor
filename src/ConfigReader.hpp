@@ -4,6 +4,7 @@
 #include <tinyxml2.h>
 
 #include <string>
+#include <vector>
 
 class ConfigReader {
    private:
@@ -12,6 +13,13 @@ class ConfigReader {
 
    public:
     ConfigReader(std::string path);
+
+    typedef std::vector<std::pair<std::string, std::string>> stationsList;
+
+    /* Returns vector with pairs:
+     * pair.first is station name
+     * pair.second is station uri */
+    stationsList getStationsList();
 
     void printStations();
 };

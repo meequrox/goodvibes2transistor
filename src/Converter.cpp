@@ -64,3 +64,15 @@ Converter::Converter(const ConfigReader& _configReader)
 }
 
 void Converter::dumpJSON() const { std::cout << configJSON.dump(4) << std::endl; }
+
+void Converter::dumpJSON(std::string path) const {
+    // TODO
+}
+
+void Converter::dumpM3U() const {
+    // TODO
+}
+
+void Converter::dumpM3U(std::string path) const {
+    // TODO
+}

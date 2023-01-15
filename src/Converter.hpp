@@ -14,6 +14,10 @@ class Converter {
     Converter(const ConfigReader& _configReader);
 
     void dumpJSON() const;
+    void dumpJSON(std::string path) const;
+
+    void dumpM3U() const;
+    void dumpM3U(std::string path) const;
 };
 
 #endif  // CONVERTER_HPP

@@ -8,17 +8,22 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(TinyXML2 REQUIRED)
 find_package(CLI11 CONFIG REQUIRED)
 
+set(JSON_BuildTests OFF)
+find_package(nlohmann_json 3.11.2 REQUIRED)
+
 add_executable(g2t src/main.cpp)
 
 target_sources(g2t PRIVATE
     # Headers
     src/ConfigReader.hpp
+    src/Converter.hpp
 
     # Sources
     src/ConfigReader.cpp
+    src/Converter.cpp
 )
 
-target_link_libraries(g2t tinyxml2::tinyxml2 CLI11::CLI11)
+target_link_libraries(g2t tinyxml2::tinyxml2 CLI11::CLI11 nlohmann_json::nlohmann_json)
 
 # Use MimeTypes header-only library (https://github.com/LonghronShen/MimeTypes)
 target_compile_definitions(g2t PUBLIC MIME_TYPES_HEADER_ONLY=1)

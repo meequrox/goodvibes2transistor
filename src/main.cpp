@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "ConfigReader.hpp"
+#include "Converter.hpp"
 
 int main(int argc, char** argv) {
     CLI::App app{"goodvibes2transistor"};
@@ -18,6 +19,9 @@ int main(int argc, char** argv) {
     try {
         ConfigReader cr(configPath);
         cr.printStations();
+
+        Converter converter(cr);
+        converter.dumpJSON();
 
     } catch (const std::invalid_argument& e) {
         std::cout << e.what() << ", exitting..." << std::endl;

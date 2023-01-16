@@ -30,9 +30,6 @@ target_sources(g2t PRIVATE
 
 target_link_libraries(g2t PRIVATE tinyxml2::tinyxml2 CLI11::CLI11 nlohmann_json::nlohmann_json ${LIBUUID_LIBRARY})
 
-# MimeTypes header-only library (https://github.com/LonghronShen/MimeTypes)
-target_compile_definitions(g2t PUBLIC MIME_TYPES_HEADER_ONLY=1)
-
 set_target_properties(g2t PROPERTIES LINK_FLAGS_RELEASE -s)
 
 install(TARGETS g2t

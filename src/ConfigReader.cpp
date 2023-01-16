@@ -3,10 +3,8 @@
 #include <exception>
 #include <iostream>
 
-#include "../include/mime-types/mime_mapper.hpp"
-
 ConfigReader::ConfigReader(const std::string& path) noexcept(false) {
-    if (mime_types::get_type(path) != "application/xml") {
+    if (path.substr(path.find_last_of(".")) != ".xml") {
         throw std::invalid_argument(path + " is not an XML file");
     }
 

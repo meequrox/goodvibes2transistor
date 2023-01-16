@@ -31,6 +31,8 @@ ConfigReader::stationsList ConfigReader::getStationsList() const {
 void ConfigReader::printStations() const {
     const stationsList stations = this->getStationsList();
 
+    std::cout << "Stations:" << std::endl;
+
     for (const auto& pair : stations) {
         std::cout << pair.first << ": " << pair.second << std::endl;
     }

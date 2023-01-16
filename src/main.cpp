@@ -11,20 +11,21 @@ int main(int argc, char** argv) {
 
     // std::string("/home/") + std::getenv("USER") + "/.local/share/goodvibes/stations.xml"
     std::string configPath;
+    bool verbose;
 
     // TODO: add --find option, which attempts to find the station.xml file and print its path
-    app.add_option("-i", configPath, "stations.xml file path")->check(CLI::ExistingPath)->required();
+    app.add_option("-i", configPath, "stations.xml file path")->check(CLI::ExistingFile)->required();
+    app.add_flag("-v,--verbose", verbose, "be verbose (stations + dumps)");
+
     CLI11_PARSE(app, argc, argv);
 
     try {
         ConfigReader cr(configPath);
-        cr.printStations();
-
-        std::cout << std::endl;
+        cr.printStations(verbose);
 
         Converter converter(cr);
-        converter.dumpJSON(true);
-        converter.dumpM3U(true);
+        converter.dumpJSON(verbose);
+        converter.dumpM3U(verbose);
 
     } catch (const std::invalid_argument& e) {
         std::cout << e.what() << ", exitting..." << std::endl;

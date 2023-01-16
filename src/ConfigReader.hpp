@@ -21,7 +21,7 @@ class ConfigReader {
      * pair.second is station uri */
     stationsList getStationsList() const;
 
-    void printStations() const;
+    void printStations(bool verbose) const;
 };
 
 #endif  // CONFIG_READER_HPP

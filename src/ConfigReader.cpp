@@ -28,12 +28,16 @@ ConfigReader::stationsList ConfigReader::getStationsList() const {
     return v;
 }
 
-void ConfigReader::printStations() const {
+void ConfigReader::printStations(bool verbose) const {
     const stationsList stations = this->getStationsList();
 
-    std::cout << "Stations:" << std::endl;
+    if (verbose) {
+        std::cout << "Stations:" << std::endl;
 
-    for (const auto& pair : stations) {
-        std::cout << pair.first << ": " << pair.second << std::endl;
+        for (const auto& pair : stations) {
+            std::cout << pair.first << ": " << pair.second << std::endl;
+        }
     }
+
+    std::cout << "Read " << stations.size() << " stations from config" << std::endl;
 }

@@ -86,52 +86,52 @@ Converter::Converter(const ConfigReader& _configReader)
     buildConfigM3U(*this);
 }
 
-void Converter::dumpJSON(bool toFile) const {
-    if (toFile) {
-        std::string path = fs::current_path().generic_string();
-        path.push_back(fs::path::preferred_separator);
-        path += "collection";
-        fs::create_directory(path);
-
-        path.push_back(fs::path::preferred_separator);
-        path += "collection.json";
-
-        std::ofstream file(path);
-
-        std::cout << "Dump json to " << path << std::endl;
-
-        if (!file) {
-            std::cout << "Can't create json dump file: " << path << std::endl;
-            return;
-        }
-
-        file << configJSON.dump() << std::endl;
-    } else {
-        std::cout << "JSON:" << std::endl << configJSON.dump(4) << std::endl;
+void Converter::dumpJSON(bool verbose) const {
+    if (verbose) {
+        std::cout << std::endl << "JSON:" << std::endl << configJSON.dump(4) << std::endl;
     }
+
+    std::string path = fs::current_path().generic_string();
+    path.push_back(fs::path::preferred_separator);
+    path += "collection";
+    fs::create_directory(path);
+
+    path.push_back(fs::path::preferred_separator);
+    path += "collection.json";
+
+    std::ofstream file(path);
+
+    if (!file) {
+        std::cout << "Can't create json dump file: " << path << std::endl;
+        return;
+    }
+
+    file << configJSON.dump() << std::endl;
+
+    std::cout << "json is dumped to " << path << std::endl;
 }
 
-void Converter::dumpM3U(bool toFile) const {
-    if (toFile) {
-        std::string path = fs::current_path().generic_string();
-        path.push_back(fs::path::preferred_separator);
-        path += "collection";
-        fs::create_directory(path);
-
-        path.push_back(fs::path::preferred_separator);
-        path += "collection.m3u";
-
-        std::ofstream file(path);
-
-        std::cout << "Dump m3u to " << path << std::endl;
-
-        if (!file) {
-            std::cout << "Can't create m3u dump file: " << path << std::endl;
-            return;
-        }
-
-        file << configM3U << std::endl;
-    } else {
-        std::cout << "M3U:" << std::endl << configM3U << std::endl;
+void Converter::dumpM3U(bool verbose) const {
+    if (verbose) {
+        std::cout << std::endl << "M3U:" << std::endl << configM3U << std::endl;
     }
+
+    std::string path = fs::current_path().generic_string();
+    path.push_back(fs::path::preferred_separator);
+    path += "collection";
+    fs::create_directory(path);
+
+    path.push_back(fs::path::preferred_separator);
+    path += "collection.m3u";
+
+    std::ofstream file(path);
+
+    if (!file) {
+        std::cout << "Can't create m3u dump file: " << path << std::endl;
+        return;
+    }
+
+    file << configM3U << std::endl;
+
+    std::cout << "m3u is dumped to " << path << std::endl;
 }

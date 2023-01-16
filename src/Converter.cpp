@@ -6,22 +6,35 @@
 #include <fstream>
 #include <iostream>
 
+#include "../include/zipper.h"
+
 namespace fs = std::filesystem;
 
+constexpr char backupDirName[] = "transistor_backup";
+constexpr char collectionDirName[] = "collection";
+constexpr char collectionFileName[] = "collection";
+constexpr char nomediaFileName[] = ".nomedia";
+
+constexpr char collectionJsonPath[] = "collection/collection.json";
+constexpr char collectionM3uPath[] = "collection/collection.m3u";
+constexpr char zipName[] = "transistor_backup.zip";
+
 static std::string getCurrentDate() {
+    constexpr size_t strSize = std::size("dd/mm/yy hh:mm am");
+    char timeStr[strSize];
+
     time_t time = std::time(nullptr);
-    char timeString[std::size("dd/mm/yy hh:mm am")];
+    strftime(std::data(timeStr), std::size(timeStr), "%D %I:%M %p", localtime(&time));
 
-    strftime(std::data(timeString), std::size(timeString), "%D %I:%M %p", localtime(&time));
-
-    return std::string(timeString);
+    return std::string(timeStr);
 }
 
 static std::string generateUUID() {
+    constexpr size_t strSize = std::size("00011122-2333-4445-5566-777888999000");
+    char uuidStr[strSize];
+
     uuid_t uuid;
     uuid_generate(uuid);
-
-    char uuidStr[std::size("00011122-2333-4445-5566-777888999000")];
     uuid_unparse_lower(uuid, uuidStr);
 
     return std::string(uuidStr);
@@ -88,21 +101,21 @@ Converter::Converter(const ConfigReader& _configReader)
 
 static void createCollectionDir() {
     std::string sep(1, fs::path::preferred_separator);
-    std::string path = fs::current_path().generic_string() + sep + "transistor_backup";
+    std::string path = fs::current_path().generic_string() + sep + backupDirName;
     fs::create_directory(path);
 
-    path += sep + "collection";
+    path += sep + collectionDirName;
     fs::create_directory(path);
 }
 
 void Converter::dumpJSON(bool verbose) const {
     if (verbose) {
-        std::cout << std::endl << "JSON:" << std::endl << configJSON.dump(4) << std::endl;
+        std::cout << std::endl << "JSON:" << std::endl << configJSON.dump(2) << std::endl;
     }
 
     std::string sep(1, fs::path::preferred_separator);
-    std::string path = fs::current_path().generic_string() + sep + "transistor_backup" + sep +
-                       "collection" + sep + "collection.json";
+    std::string path = fs::current_path().generic_string() + sep + backupDirName + sep +
+                       collectionDirName + sep + collectionFileName + ".json";
 
     std::ofstream file(path);
 
@@ -122,8 +135,8 @@ void Converter::dumpM3U(bool verbose) const {
     }
 
     std::string sep(1, fs::path::preferred_separator);
-    std::string path = fs::current_path().generic_string() + sep + "transistor_backup" + sep +
-                       "collection" + sep + "collection.m3u";
+    std::string path = fs::current_path().generic_string() + sep + backupDirName + sep +
+                       collectionDirName + sep + collectionFileName + ".m3u";
 
     std::ofstream file(path);
 
@@ -139,8 +152,7 @@ void Converter::dumpM3U(bool verbose) const {
 
 static void dumpNomedia() {
     std::string sep(1, fs::path::preferred_separator);
-    std::string path =
-        fs::current_path().generic_string() + sep + "transistor_backup" + sep + ".nomedia";
+    std::string path = fs::current_path().generic_string() + sep + backupDirName + sep + ".nomedia";
 
     std::ofstream file(path);
 
@@ -153,9 +165,31 @@ static void dumpNomedia() {
 }
 
 void Converter::dumpCollection(bool archive, bool verbose) const {
-    createCollectionDir();
+    if (archive) {
+        zipper::Zip zip(zipName);
 
-    dumpJSON(verbose);
-    dumpM3U(verbose);
-    dumpNomedia();
+        if (verbose) {
+            std::cout << std::endl << "JSON:" << std::endl << configJSON.dump(2) << std::endl;
+            std::cout << std::endl << "M3U:" << std::endl << configM3U << std::endl << std::endl;
+        }
+
+        if (!zip.is_open()) {
+            std::cout << "Can't create backup archive: " << zipName << std::endl;
+            return;
+        }
+
+        zip.add_dir(collectionDirName);
+        zip.add_file(collectionJsonPath, configJSON.dump());
+        zip.add_file(collectionM3uPath, configM3U + "\n");
+        zip.add_file(nomediaFileName, std::string(1, '\x00'));
+        zip.close();
+
+        std::cout << "Collection is archived to " << zipName << std::endl;
+    } else {
+        createCollectionDir();
+
+        dumpJSON(verbose);
+        dumpM3U(verbose);
+        dumpNomedia();
+    }
 }

@@ -23,15 +23,14 @@ static std::string generateUUID() {
     return std::string(uuidStr);
 }
 
-Converter::Converter(const ConfigReader& _configReader)
-    : configReader(_configReader), configJSON(nullptr) {
+void buildConfigJSON(Converter& converter) {
     // Modification date must be in the format "12/24/22 12:55 AM"
-    configJSON["modificationDate"] = getCurrentDate();
-    configJSON["stations"];
-    configJSON["version"] = 0;
+    converter.configJSON["modificationDate"] = getCurrentDate();
+    converter.configJSON["stations"];
+    converter.configJSON["version"] = 0;
 
     size_t i = 0;
-    for (const auto& station : configReader.getStationsList()) {
+    for (const auto& station : converter.configReader.getStationsList()) {
         nlohmann::json stationJSON(nullptr);
 
         // Default values
@@ -53,26 +52,46 @@ Converter::Converter(const ConfigReader& _configReader)
         stationJSON["streamContent"] = "audio/mpeg";
 
         // Station-specific values
-        stationJSON["modificationDate"] = configJSON["modificationDate"];
+        stationJSON["modificationDate"] = converter.configJSON["modificationDate"];
         stationJSON["name"] = station.first;
         stationJSON["streamUris"][0] = station.second;
         stationJSON["uuid"] = generateUUID();
 
-        configJSON["stations"][i] = stationJSON;
+        converter.configJSON["stations"][i] = stationJSON;
         i++;
     }
+}
+
+void buildConfigM3U(Converter& converter) {
+    converter.configM3U = "#EXTM3U\n\n";
+
+    size_t i = 0;
+    for (const auto& station : converter.configReader.getStationsList()) {
+        if (i) converter.configM3U += "\n\n";
+
+        converter.configM3U += "#EXTINF:-1," + station.first + "\n";
+        converter.configM3U += station.second;
+
+        i++;
+    }
+}
+
+Converter::Converter(const ConfigReader& _configReader)
+    : configReader(_configReader), configJSON(nullptr) {
+    buildConfigJSON(*this);
+    buildConfigM3U(*this);
 }
 
 void Converter::dumpJSON() const { std::cout << configJSON.dump(4) << std::endl; }
 
 void Converter::dumpJSON(std::string path) const {
     // TODO
+    // Add newline at the EOF
 }
 
-void Converter::dumpM3U() const {
-    // TODO
-}
+void Converter::dumpM3U() const { std::cout << "M3U:" << std::endl << configM3U << std::endl; }
 
 void Converter::dumpM3U(std::string path) const {
     // TODO
+    // Add newline at the EOF
 }

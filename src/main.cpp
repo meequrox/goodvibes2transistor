@@ -24,6 +24,7 @@ int main(int argc, char** argv) {
 
         Converter converter(cr);
         converter.dumpJSON();
+        converter.dumpM3U();
 
     } catch (const std::invalid_argument& e) {
         std::cout << e.what() << ", exitting..." << std::endl;

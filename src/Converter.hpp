@@ -9,6 +9,7 @@ class Converter {
    private:
     const ConfigReader& configReader;
     nlohmann::json configJSON;
+    std::string configM3U;
 
    public:
     Converter(const ConfigReader& _configReader);
@@ -18,6 +19,9 @@ class Converter {
 
     void dumpM3U() const;
     void dumpM3U(std::string path) const;
+
+    friend void buildConfigJSON(Converter& converter);
+    friend void buildConfigM3U(Converter& converter);
 };
 
 #endif  // CONVERTER_HPP

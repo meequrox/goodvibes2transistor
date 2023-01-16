@@ -4,11 +4,13 @@
 #include <iostream>
 
 ConfigReader::ConfigReader(const std::string& path) noexcept(false) {
-    if (path.substr(path.find_last_of(".")) != ".xml") {
-        throw std::invalid_argument(path + " is not an XML file");
-    }
+    if (path.substr(path.find_last_of(".")) != ".xml")
+        throw std::invalid_argument(path + " is not an XML file.");
 
     doc.LoadFile(path.c_str());
+
+    if (doc.Error()) throw std::invalid_argument("Error parsing " + path + " file. Does it exist?");
+
     stations = doc.FirstChildElement("Stations");
 }
 
@@ -34,9 +36,7 @@ void ConfigReader::printStations(bool verbose) const {
     if (verbose) {
         std::cout << "Stations:" << std::endl;
 
-        for (const auto& pair : stations) {
-            std::cout << pair.first << ": " << pair.second << std::endl;
-        }
+        for (const auto& pair : stations) std::cout << pair.first << ": " << pair.second << std::endl;
     }
 
     std::cout << "Read " << stations.size() << " stations from config" << std::endl;

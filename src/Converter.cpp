@@ -27,14 +27,14 @@ static std::string generateUUID() {
     return std::string(uuidStr);
 }
 
-void buildConfigJSON(Converter& converter) {
+void Converter::buildConfigJSON() {
     // Modification date must be in the format "12/24/22 12:55 AM"
-    converter.configJSON["modificationDate"] = getCurrentDate();
-    converter.configJSON["stations"];
-    converter.configJSON["version"] = 0;
+    configJSON["modificationDate"] = getCurrentDate();
+    configJSON["stations"];
+    configJSON["version"] = 0;
 
     size_t i = 0;
-    for (const auto& station : converter.configReader.getStationsList()) {
+    for (const auto& station : configReader.getStationsList()) {
         nlohmann::json stationJSON(nullptr);
 
         // Default values
@@ -56,25 +56,25 @@ void buildConfigJSON(Converter& converter) {
         stationJSON["streamContent"] = "audio/mpeg";
 
         // Station-specific values
-        stationJSON["modificationDate"] = converter.configJSON["modificationDate"];
+        stationJSON["modificationDate"] = configJSON["modificationDate"];
         stationJSON["name"] = station.first;
         stationJSON["streamUris"][0] = station.second;
         stationJSON["uuid"] = generateUUID();
 
-        converter.configJSON["stations"][i] = stationJSON;
+        configJSON["stations"][i] = stationJSON;
         i++;
     }
 }
 
-void buildConfigM3U(Converter& converter) {
-    converter.configM3U = "#EXTM3U\n\n";
+void Converter::buildConfigM3U() {
+    configM3U = "#EXTM3U\n\n";
 
     size_t i = 0;
-    for (const auto& station : converter.configReader.getStationsList()) {
-        if (i) converter.configM3U += "\n\n";
+    for (const auto& station : configReader.getStationsList()) {
+        if (i) configM3U += "\n\n";
 
-        converter.configM3U += "#EXTINF:-1," + station.first + "\n";
-        converter.configM3U += station.second;
+        configM3U += "#EXTINF:-1," + station.first + "\n";
+        configM3U += station.second;
 
         i++;
     }
@@ -82,8 +82,17 @@ void buildConfigM3U(Converter& converter) {
 
 Converter::Converter(const ConfigReader& _configReader)
     : configReader(_configReader), configJSON(nullptr) {
-    buildConfigJSON(*this);
-    buildConfigM3U(*this);
+    buildConfigJSON();
+    buildConfigM3U();
+}
+
+static void createCollectionDir() {
+    std::string sep(1, fs::path::preferred_separator);
+    std::string path = fs::current_path().generic_string() + sep + "transistor_backup";
+    fs::create_directory(path);
+
+    path += sep + "collection";
+    fs::create_directory(path);
 }
 
 void Converter::dumpJSON(bool verbose) const {
@@ -91,13 +100,9 @@ void Converter::dumpJSON(bool verbose) const {
         std::cout << std::endl << "JSON:" << std::endl << configJSON.dump(4) << std::endl;
     }
 
-    std::string path = fs::current_path().generic_string();
-    path.push_back(fs::path::preferred_separator);
-    path += "collection";
-    fs::create_directory(path);
-
-    path.push_back(fs::path::preferred_separator);
-    path += "collection.json";
+    std::string sep(1, fs::path::preferred_separator);
+    std::string path = fs::current_path().generic_string() + sep + "transistor_backup" + sep +
+                       "collection" + sep + "collection.json";
 
     std::ofstream file(path);
 
@@ -106,7 +111,7 @@ void Converter::dumpJSON(bool verbose) const {
         return;
     }
 
-    file << configJSON.dump() << std::endl;
+    file << configJSON.dump();
 
     std::cout << "json is dumped to " << path << std::endl;
 }
@@ -116,13 +121,9 @@ void Converter::dumpM3U(bool verbose) const {
         std::cout << std::endl << "M3U:" << std::endl << configM3U << std::endl;
     }
 
-    std::string path = fs::current_path().generic_string();
-    path.push_back(fs::path::preferred_separator);
-    path += "collection";
-    fs::create_directory(path);
-
-    path.push_back(fs::path::preferred_separator);
-    path += "collection.m3u";
+    std::string sep(1, fs::path::preferred_separator);
+    std::string path = fs::current_path().generic_string() + sep + "transistor_backup" + sep +
+                       "collection" + sep + "collection.m3u";
 
     std::ofstream file(path);
 
@@ -134,4 +135,27 @@ void Converter::dumpM3U(bool verbose) const {
     file << configM3U << std::endl;
 
     std::cout << "m3u is dumped to " << path << std::endl;
+}
+
+static void dumpNomedia() {
+    std::string sep(1, fs::path::preferred_separator);
+    std::string path =
+        fs::current_path().generic_string() + sep + "transistor_backup" + sep + ".nomedia";
+
+    std::ofstream file(path);
+
+    if (!file) {
+        std::cout << "Can't create nomedia file: " << path << std::endl;
+        return;
+    }
+
+    file << std::string(1, '\x00');
+}
+
+void Converter::dumpCollection(bool archive, bool verbose) const {
+    createCollectionDir();
+
+    dumpJSON(verbose);
+    dumpM3U(verbose);
+    dumpNomedia();
 }

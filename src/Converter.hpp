@@ -11,14 +11,16 @@ class Converter {
     nlohmann::json configJSON;
     std::string configM3U;
 
-   public:
-    Converter(const ConfigReader& _configReader);
+    void buildConfigJSON();
+    void buildConfigM3U();
 
     void dumpJSON(bool verbose) const;
     void dumpM3U(bool verbose) const;
 
-    friend void buildConfigJSON(Converter& converter);
-    friend void buildConfigM3U(Converter& converter);
+   public:
+    Converter(const ConfigReader& _configReader);
+
+    void dumpCollection(bool archive, bool verbose) const;
 };
 
 #endif  // CONVERTER_HPP

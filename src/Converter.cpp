@@ -2,7 +2,11 @@
 
 #include <uuid.h>
 
+#include <filesystem>
+#include <fstream>
 #include <iostream>
+
+namespace fs = std::filesystem;
 
 static std::string getCurrentDate() {
     time_t time = std::time(nullptr);
@@ -82,16 +86,52 @@ Converter::Converter(const ConfigReader& _configReader)
     buildConfigM3U(*this);
 }
 
-void Converter::dumpJSON() const { std::cout << configJSON.dump(4) << std::endl; }
+void Converter::dumpJSON(bool toFile) const {
+    if (toFile) {
+        std::string path = fs::current_path().generic_string();
+        path.push_back(fs::path::preferred_separator);
+        path += "collection";
+        fs::create_directory(path);
 
-void Converter::dumpJSON(std::string path) const {
-    // TODO
-    // Add newline at the EOF
+        path.push_back(fs::path::preferred_separator);
+        path += "collection.json";
+
+        std::ofstream file(path);
+
+        std::cout << "Dump json to " << path << std::endl;
+
+        if (!file) {
+            std::cout << "Can't create json dump file: " << path << std::endl;
+            return;
+        }
+
+        file << configJSON.dump() << std::endl;
+    } else {
+        std::cout << "JSON:" << std::endl << configJSON.dump(4) << std::endl;
+    }
 }
 
-void Converter::dumpM3U() const { std::cout << "M3U:" << std::endl << configM3U << std::endl; }
+void Converter::dumpM3U(bool toFile) const {
+    if (toFile) {
+        std::string path = fs::current_path().generic_string();
+        path.push_back(fs::path::preferred_separator);
+        path += "collection";
+        fs::create_directory(path);
 
-void Converter::dumpM3U(std::string path) const {
-    // TODO
-    // Add newline at the EOF
+        path.push_back(fs::path::preferred_separator);
+        path += "collection.m3u";
+
+        std::ofstream file(path);
+
+        std::cout << "Dump m3u to " << path << std::endl;
+
+        if (!file) {
+            std::cout << "Can't create m3u dump file: " << path << std::endl;
+            return;
+        }
+
+        file << configM3U << std::endl;
+    } else {
+        std::cout << "M3U:" << std::endl << configM3U << std::endl;
+    }
 }

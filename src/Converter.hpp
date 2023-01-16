@@ -14,11 +14,8 @@ class Converter {
    public:
     Converter(const ConfigReader& _configReader);
 
-    void dumpJSON() const;
-    void dumpJSON(std::string path) const;
-
-    void dumpM3U() const;
-    void dumpM3U(std::string path) const;
+    void dumpJSON(bool toFile) const;
+    void dumpM3U(bool toFile) const;
 
     friend void buildConfigJSON(Converter& converter);
     friend void buildConfigM3U(Converter& converter);

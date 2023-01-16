@@ -23,8 +23,8 @@ int main(int argc, char** argv) {
         std::cout << std::endl;
 
         Converter converter(cr);
-        converter.dumpJSON();
-        converter.dumpM3U();
+        converter.dumpJSON(true);
+        converter.dumpM3U(true);
 
     } catch (const std::invalid_argument& e) {
         std::cout << e.what() << ", exitting..." << std::endl;

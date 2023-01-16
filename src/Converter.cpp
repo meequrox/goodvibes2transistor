@@ -109,9 +109,7 @@ static void createCollectionDir() {
 }
 
 void Converter::dumpJSON(bool verbose) const {
-    if (verbose) {
-        std::cout << std::endl << "JSON:" << std::endl << configJSON.dump(2) << std::endl;
-    }
+    if (verbose) std::cout << std::endl << "JSON:" << std::endl << configJSON.dump(2) << std::endl;
 
     std::string sep(1, fs::path::preferred_separator);
     std::string path = fs::current_path().generic_string() + sep + backupDirName + sep +
@@ -130,9 +128,7 @@ void Converter::dumpJSON(bool verbose) const {
 }
 
 void Converter::dumpM3U(bool verbose) const {
-    if (verbose) {
-        std::cout << std::endl << "M3U:" << std::endl << configM3U << std::endl;
-    }
+    if (verbose) std::cout << std::endl << "M3U:" << std::endl << configM3U << std::endl;
 
     std::string sep(1, fs::path::preferred_separator);
     std::string path = fs::current_path().generic_string() + sep + backupDirName + sep +

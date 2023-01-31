@@ -4,7 +4,7 @@
 #include <filesystem>
 #include <iostream>
 
-#include "ConfigReader.hpp"
+#include "BookmarksReader.hpp"
 #include "Converter.hpp"
 
 class App {
@@ -13,12 +13,12 @@ class App {
     enum modes { goodvibes, radiotray_ng, guess };
 
     CLI::App app;
-    std::string configPath;
+    std::string bookmarksPath;
     modes mode;
     status status;
 
     void setMode() {
-        std::string filename = configPath.substr(configPath.find_last_of("/") + 1);
+        std::string filename = bookmarksPath.substr(bookmarksPath.find_last_of("/") + 1);
         if (app.get_option("-g")->count())
             mode = guess;
         else if (filename == "stations.xml")
@@ -67,7 +67,7 @@ class App {
 
    public:
     App(int argc, char** argv) : app("goodvibes2transistor") {
-        app.add_option("-i", configPath,
+        app.add_option("-i", bookmarksPath,
                        "bookmarks file path; use -g instead if you don't know its location")
             ->group("Input");
         app.add_flag("-g", "program will print bookmarks files paths then exit")->group("Input");
@@ -91,14 +91,14 @@ class App {
             std::cout << "Radiotray-NG: " << findRadiotrayBookmarks() << std::endl;
         } else if (!app.get_option("-g")->count() && !app.get_option("-i")->count()) {
             app.exit(CLI::Error("", "Either the -i option or the -g flag must be provided."));
-        } else if (std::filesystem::exists(configPath)) {
-            ConfigReader cr(configPath);
+        } else if (std::filesystem::exists(bookmarksPath)) {
+            BookmarksReader cr(bookmarksPath);
             cr.printStations(verbose);
 
             Converter converter(cr);
             converter.dumpCollection(app.get_option("-a")->count(), verbose);
         } else
-            std::cout << "File does not exist: " << configPath << std::endl;
+            std::cout << "File does not exist: " << bookmarksPath << std::endl;
     }
 };
 

@@ -1,18 +1,18 @@
-#ifndef CONFIG_READER_HPP
-#define CONFIG_READER_HPP
+#ifndef BOOKMARKS_READER_HPP
+#define BOOKMARKS_READER_HPP
 
 #include <tinyxml2.h>
 
 #include <string>
 #include <vector>
 
-class ConfigReader {
+class BookmarksReader {
    private:
     tinyxml2::XMLDocument doc;
     const tinyxml2::XMLElement* stations;
 
    public:
-    ConfigReader(const std::string& path);
+    BookmarksReader(const std::string& path);
 
     typedef std::vector<std::pair<std::string, std::string>> stationsList;
 
@@ -24,4 +24,4 @@ class ConfigReader {
     void printStations(bool verbose) const;
 };
 
-#endif  // CONFIG_READER_HPP
+#endif  // BOOKMARKS_READER_HPP

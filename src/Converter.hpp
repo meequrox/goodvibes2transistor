@@ -3,22 +3,22 @@
 
 #include <nlohmann/json.hpp>
 
-#include "ConfigReader.hpp"
+#include "BookmarksReader.hpp"
 
 class Converter {
    private:
-    const ConfigReader& configReader;
-    nlohmann::json configJSON;
-    std::string configM3U;
+    const BookmarksReader& bookmarksReader;
+    nlohmann::json bookmarksJSON;
+    std::string bookmarksM3U;
 
-    void buildConfigJSON();
-    void buildConfigM3U();
+    void buildBookmarksJSON();
+    void buildBookmarksM3U();
 
     void dumpJSON(bool verbose) const;
     void dumpM3U(bool verbose) const;
 
    public:
-    Converter(const ConfigReader& _configReader);
+    Converter(const BookmarksReader& _bookmarksReader);
 
     void dumpCollection(bool archive, bool verbose) const;
 };

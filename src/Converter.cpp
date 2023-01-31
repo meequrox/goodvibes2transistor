@@ -40,14 +40,14 @@ static std::string generateUUID() {
     return std::string(uuidStr);
 }
 
-void Converter::buildConfigJSON() {
+void Converter::buildBookmarksJSON() {
     // Modification date must be in the format "12/24/22 12:55 AM"
-    configJSON["modificationDate"] = getCurrentDate();
-    configJSON["stations"];
-    configJSON["version"] = 0;
+    bookmarksJSON["modificationDate"] = getCurrentDate();
+    bookmarksJSON["stations"];
+    bookmarksJSON["version"] = 0;
 
     size_t i = 0;
-    for (const auto& station : configReader.getStationsList()) {
+    for (const auto& station : bookmarksReader.getStationsList()) {
         nlohmann::json stationJSON(nullptr);
 
         // Default values
@@ -69,34 +69,34 @@ void Converter::buildConfigJSON() {
         stationJSON["streamContent"] = "audio/mpeg";
 
         // Station-specific values
-        stationJSON["modificationDate"] = configJSON["modificationDate"];
+        stationJSON["modificationDate"] = bookmarksJSON["modificationDate"];
         stationJSON["name"] = station.first;
         stationJSON["streamUris"][0] = station.second;
         stationJSON["uuid"] = generateUUID();
 
-        configJSON["stations"][i] = stationJSON;
+        bookmarksJSON["stations"][i] = stationJSON;
         i++;
     }
 }
 
-void Converter::buildConfigM3U() {
-    configM3U = "#EXTM3U\n\n";
+void Converter::buildBookmarksM3U() {
+    bookmarksM3U = "#EXTM3U\n\n";
 
     size_t i = 0;
-    for (const auto& station : configReader.getStationsList()) {
-        if (i) configM3U += "\n\n";
+    for (const auto& station : bookmarksReader.getStationsList()) {
+        if (i) bookmarksM3U += "\n\n";
 
-        configM3U += "#EXTINF:-1," + station.first + "\n";
-        configM3U += station.second;
+        bookmarksM3U += "#EXTINF:-1," + station.first + "\n";
+        bookmarksM3U += station.second;
 
         i++;
     }
 }
 
-Converter::Converter(const ConfigReader& _configReader)
-    : configReader(_configReader), configJSON(nullptr) {
-    buildConfigJSON();
-    buildConfigM3U();
+Converter::Converter(const BookmarksReader& _bookmarksReader)
+    : bookmarksReader(_bookmarksReader), bookmarksJSON(nullptr) {
+    buildBookmarksJSON();
+    buildBookmarksM3U();
 }
 
 static void createCollectionDir() {
@@ -109,7 +109,7 @@ static void createCollectionDir() {
 }
 
 void Converter::dumpJSON(bool verbose) const {
-    if (verbose) std::cout << std::endl << "JSON:" << std::endl << configJSON.dump(2) << std::endl;
+    if (verbose) std::cout << std::endl << "JSON:" << std::endl << bookmarksJSON.dump(2) << std::endl;
 
     std::string sep(1, fs::path::preferred_separator);
     std::string path = fs::current_path().generic_string() + sep + backupDirName + sep +
@@ -122,13 +122,13 @@ void Converter::dumpJSON(bool verbose) const {
         return;
     }
 
-    file << configJSON.dump();
+    file << bookmarksJSON.dump();
 
     std::cout << "json is dumped to " << path << std::endl;
 }
 
 void Converter::dumpM3U(bool verbose) const {
-    if (verbose) std::cout << std::endl << "M3U:" << std::endl << configM3U << std::endl;
+    if (verbose) std::cout << std::endl << "M3U:" << std::endl << bookmarksM3U << std::endl;
 
     std::string sep(1, fs::path::preferred_separator);
     std::string path = fs::current_path().generic_string() + sep + backupDirName + sep +
@@ -141,7 +141,7 @@ void Converter::dumpM3U(bool verbose) const {
         return;
     }
 
-    file << configM3U << std::endl;
+    file << bookmarksM3U << std::endl;
 
     std::cout << "m3u is dumped to " << path << std::endl;
 }
@@ -165,8 +165,8 @@ void Converter::dumpCollection(bool archive, bool verbose) const {
         zipper::Zip zip(zipName);
 
         if (verbose) {
-            std::cout << std::endl << "JSON:" << std::endl << configJSON.dump(2) << std::endl;
-            std::cout << std::endl << "M3U:" << std::endl << configM3U << std::endl << std::endl;
+            std::cout << std::endl << "JSON:" << std::endl << bookmarksJSON.dump(2) << std::endl;
+            std::cout << std::endl << "M3U:" << std::endl << bookmarksM3U << std::endl << std::endl;
         }
 
         if (!zip.is_open()) {
@@ -175,8 +175,8 @@ void Converter::dumpCollection(bool archive, bool verbose) const {
         }
 
         zip.add_dir(collectionDirName);
-        zip.add_file(collectionJsonPath, configJSON.dump());
-        zip.add_file(collectionM3uPath, configM3U + "\n");
+        zip.add_file(collectionJsonPath, bookmarksJSON.dump());
+        zip.add_file(collectionM3uPath, bookmarksM3U + "\n");
         zip.add_file(nomediaFileName, std::string(1, '\x00'));
         zip.close();
 

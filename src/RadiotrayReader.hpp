@@ -13,7 +13,6 @@ class RadiotrayReader : public BookmarksReader {
     RadiotrayReader(const std::string& path);
 
     stationsList getStationsList() const override;
-    void printStations(bool verbose) const override;
 };
 
 #endif  // RADIOTRAY_READER_HPP

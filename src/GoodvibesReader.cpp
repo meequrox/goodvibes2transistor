@@ -1,7 +1,6 @@
 #include "GoodvibesReader.hpp"
 
 #include <exception>
-#include <iostream>
 
 GoodvibesReader::GoodvibesReader(const std::string& path) noexcept(false) {
     if (path.substr(path.find_last_of(".")) != ".xml")
@@ -28,16 +27,4 @@ GoodvibesReader::stationsList GoodvibesReader::getStationsList() const {
     }
 
     return v;
-}
-
-void GoodvibesReader::printStations(bool verbose) const {
-    const stationsList stations = this->getStationsList();
-
-    if (verbose) {
-        std::cout << "Stations:" << std::endl;
-
-        for (const auto& pair : stations) std::cout << pair.first << ": " << pair.second << std::endl;
-    }
-
-    std::cout << "Read " << stations.size() << " stations from bookmarks file" << std::endl;
 }

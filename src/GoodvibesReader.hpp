@@ -14,7 +14,6 @@ class GoodvibesReader : public BookmarksReader {
     GoodvibesReader(const std::string& path);
 
     stationsList getStationsList() const override;
-    void printStations(bool verbose) const override;
 };
 
 #endif  // GOODVIBES_READER_HPP

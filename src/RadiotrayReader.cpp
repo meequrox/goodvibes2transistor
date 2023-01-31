@@ -31,15 +31,3 @@ RadiotrayReader::stationsList RadiotrayReader::getStationsList() const {
 
     return v;
 }
-
-void RadiotrayReader::printStations(bool verbose) const {
-    const stationsList stations = this->getStationsList();
-
-    if (verbose) {
-        std::cout << "Stations:" << std::endl;
-
-        for (const auto& pair : stations) std::cout << pair.first << ": " << pair.second << std::endl;
-    }
-
-    std::cout << "Read " << stations.size() << " stations from bookmarks file" << std::endl;
-}

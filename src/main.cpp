@@ -1,57 +1,110 @@
 #include <CLI/App.hpp>
 #include <CLI/CLI.hpp>
 #include <CLI/Formatter.hpp>
+#include <filesystem>
 #include <iostream>
 
 #include "ConfigReader.hpp"
 #include "Converter.hpp"
 
-int main(int argc, char** argv) {
-    CLI::App app{"goodvibes2transistor"};
+class App {
+   private:
+    enum status { success, failed };
+    enum modes { goodvibes, radiotray_ng, guess };
 
+    CLI::App app;
     std::string configPath;
+    modes mode;
+    status status;
 
-    CLI::Option* oInput = app.add_option("-i,--input", configPath,
-                                         "stations.xml file path\n"
-                                         "use -g instead if you don't know its location")
-                              ->group("Input")
-                              ->check(CLI::ExistingFile);
-    CLI::Option* fGuess = app.add_flag("-g,--guess",
-                                       "program will find stations.xml file by itself\n"
-                                       "don't use with -i flag")
-                              ->group("Input")
-                              ->excludes(oInput);
-
-    CLI::Option* fArchive =
-        app.add_flag("-a,--archive", "archive collection to backup zip file")->group("Output");
-    CLI::Option* fVerbose =
-        app.add_flag("-v,--verbose", "be verbose (stations + dumps)")->group("Output");
-
-    CLI11_PARSE(app, argc, argv);
-
-    if (!fGuess->count() && !oInput->count()) {
-        app.exit(CLI::Error("", "Either the -i option or the -g flag must be provided."));
-        return EXIT_FAILURE;
+    void setMode() {
+        std::string filename = configPath.substr(configPath.find_last_of("/") + 1);
+        if (app.get_option("-g")->count())
+            mode = guess;
+        else if (filename == "stations.xml")
+            mode = goodvibes;
+        else if (filename == "bookmarks.json")
+            mode = radiotray_ng;
     }
 
-    if (fVerbose->count()) std::cout << app.config_to_str() << std::endl;
+    int parseArgs(int argc, char** argv) {
+        try {
+            app.parse(argc, argv);
+            status = success;
 
-    if (fGuess->count()) {
-        configPath =
-            std::string("/home/") + std::getenv("USER") + "/.local/share/goodvibes/stations.xml";
-        std::cout << "Guess mode: config is probably at " << configPath << std::endl;
+            return 0;
+        } catch (const CLI::ParseError& e) {
+            status = failed;
+
+            return app.exit(e);
+        }
     }
 
-    try {
-        ConfigReader cr(configPath);
-        cr.printStations(fVerbose->count());
+    std::string findGoodvibesBookmarks() {
+        std::string file;
+        if (std::getenv("XDG_DATA_HOME"))
+            file = std::getenv("XDG_DATA_HOME");
+        else
+            file = std::string("/home/") + std::getenv("USER") + "/.local/share";
 
-        Converter converter(cr);
-        converter.dumpCollection(fArchive->count(), fVerbose->count());
+        file += std::string("/goodvibes/stations.xml");
 
-    } catch (const std::invalid_argument& e) {
-        std::cout << e.what() << std::endl;
+        return std::filesystem::exists(file) ? file : "not found";
     }
+
+    std::string findRadiotrayBookmarks() {
+        std::string file;
+
+        if (std::getenv("XDG_CONFIG_HOME"))
+            file = std::getenv("XDG_CONFIG_HOME");
+        else
+            file = std::string("/home/") + std::getenv("USER") + "/.config";
+
+        file += std::string("/radiotray-ng/bookmarks.json");
+
+        return std::filesystem::exists(file) ? file : "not found";
+    }
+
+   public:
+    App(int argc, char** argv) : app("goodvibes2transistor") {
+        app.add_option("-i", configPath,
+                       "bookmarks file path; use -g instead if you don't know its location")
+            ->group("Input");
+        app.add_flag("-g", "program will print bookmarks files paths then exit")->group("Input");
+
+        app.add_flag("-a", "archive collection to backup zip file")->group("Output");
+        app.add_flag("-v", "be verbose (stations + dumps)")->group("Output");
+
+        parseArgs(argc, argv);
+        setMode();
+    }
+
+    void run() {
+        if (status == failed || app.get_option("-h")->count()) return;
+
+        bool verbose = app.get_option("-v")->count();
+
+        if (verbose) std::cout << app.config_to_str() << std::endl;
+
+        if (mode == guess) {
+            std::cout << "Goodvibes: " << findGoodvibesBookmarks() << std::endl;
+            std::cout << "Radiotray-NG: " << findRadiotrayBookmarks() << std::endl;
+        } else if (!app.get_option("-g")->count() && !app.get_option("-i")->count()) {
+            app.exit(CLI::Error("", "Either the -i option or the -g flag must be provided."));
+        } else if (std::filesystem::exists(configPath)) {
+            ConfigReader cr(configPath);
+            cr.printStations(verbose);
+
+            Converter converter(cr);
+            converter.dumpCollection(app.get_option("-a")->count(), verbose);
+        } else
+            std::cout << "File does not exist: " << configPath << std::endl;
+    }
+};
+
+int main(int argc, char** argv) {
+    App app(argc, argv);
+    app.run();
 
     return EXIT_SUCCESS;
 }

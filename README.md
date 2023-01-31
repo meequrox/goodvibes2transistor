@@ -11,7 +11,7 @@ Currently supported:
 
 ![Goodvibes](https://i.ibb.co/kx5wXJK/preview.png)
 
-![Radiotray-NG](https://i.ibb.co/MD2CC4P/preview.png)
+![Radiotray-NG](https://i.ibb.co/2gRXCKW/preview.png)
 
 
 ## Installation
@@ -45,9 +45,11 @@ make
 ./r2t -a -i /home/$USER/.local/share/goodvibes/stations.xml
 ```
 
-The __transistor_backup.zip__ archive will be created in the current working directory. It can be imported into Transistor via settings. When you import any backup, it will replace your existing Transistor stations.
+The __transistor_backup.zip__ archive will be created in the current working directory. It can be imported into Transistor via settings.
 
-Note that without `-a` flag program will create __transistor_backup__ directory with collection files. You could probably sync the contents of __transistor_backup/__ to __/storage/emulated/0/Android/data/org.y20k.transistor/files/__, but Android usually won't let you do that ¯\_(ツ)_/¯
+When you import any backup, it will replace your existing Transistor stations.
+
+Note that without `-a` flag program will create __transistor_backup__ directory with collection files. You could probably sync the contents of _transistor_backup/_ to _/storage/emulated/0/Android/data/org.y20k.transistor/files/_, but Android usually won't let you do that ¯\\_(ツ)_/¯
 
 ## Contributing
 

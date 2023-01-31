@@ -26,11 +26,14 @@ add_executable(g2t src/main.cpp)
 
 target_sources(g2t PRIVATE
     # Headers
-    src/BookmarksReader.hpp
+    src/GoodvibesReader.hpp
+    src/RadiotrayReader.hpp
     src/Converter.hpp
+    src/BookmarksReader.hpp
 
     # Sources
-    src/BookmarksReader.cpp
+    src/GoodvibesReader.cpp
+    src/RadiotrayReader.cpp
     src/Converter.cpp
 )
 

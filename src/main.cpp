@@ -4,8 +4,9 @@
 #include <filesystem>
 #include <iostream>
 
-#include "BookmarksReader.hpp"
 #include "Converter.hpp"
+#include "GoodvibesReader.hpp"
+#include "RadiotrayReader.hpp"
 
 class App {
    private:
@@ -65,6 +66,18 @@ class App {
         return std::filesystem::exists(file) ? file : "not found";
     }
 
+    BookmarksReader* getReader(std::string configPath) {
+        BookmarksReader* r = nullptr;
+
+        if (mode == goodvibes)
+            r = new GoodvibesReader(configPath);
+        else if (mode == radiotray_ng) {
+            r = new RadiotrayReader(configPath);
+        }
+
+        return r;
+    }
+
    public:
     App(int argc, char** argv) : app("goodvibes2transistor") {
         app.add_option("-i", bookmarksPath,
@@ -92,11 +105,13 @@ class App {
         } else if (!app.get_option("-g")->count() && !app.get_option("-i")->count()) {
             app.exit(CLI::Error("", "Either the -i option or the -g flag must be provided."));
         } else if (std::filesystem::exists(bookmarksPath)) {
-            BookmarksReader cr(bookmarksPath);
-            cr.printStations(verbose);
+            BookmarksReader* cr = getReader(bookmarksPath);
+            cr->printStations(verbose);
 
-            Converter converter(cr);
+            Converter converter(*cr);
             converter.dumpCollection(app.get_option("-a")->count(), verbose);
+
+            delete cr;
         } else
             std::cout << "File does not exist: " << bookmarksPath << std::endl;
     }

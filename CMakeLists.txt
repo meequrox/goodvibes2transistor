@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(g2t LANGUAGES CXX)
+project(r2t LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -22,9 +22,9 @@ if (PKG_CONFIG_FOUND)
     PKG_CHECK_MODULES(ZIP minizip)
 endif (PKG_CONFIG_FOUND)
 
-add_executable(g2t src/main.cpp)
+add_executable(r2t src/main.cpp)
 
-target_sources(g2t PRIVATE
+target_sources(r2t PRIVATE
     # Headers
     src/GoodvibesReader.hpp
     src/RadiotrayReader.hpp
@@ -37,9 +37,9 @@ target_sources(g2t PRIVATE
     src/Converter.cpp
 )
 
-target_link_libraries(g2t PRIVATE tinyxml2::tinyxml2 CLI11::CLI11 nlohmann_json::nlohmann_json ${LIBUUID_LIBRARY} ${ZIP_LIBRARIES})
+target_link_libraries(r2t PRIVATE tinyxml2::tinyxml2 CLI11::CLI11 nlohmann_json::nlohmann_json ${LIBUUID_LIBRARY} ${ZIP_LIBRARIES})
 
-set_target_properties(g2t PROPERTIES LINK_FLAGS_RELEASE -s)
+set_target_properties(r2t PROPERTIES LINK_FLAGS_RELEASE -s)
 
-install(TARGETS g2t
+install(TARGETS r2t
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})

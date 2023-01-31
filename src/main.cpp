@@ -79,7 +79,7 @@ class App {
     }
 
    public:
-    App(int argc, char** argv) : app("goodvibes2transistor") {
+    App(int argc, char** argv) : app("radio2transistor") {
         app.add_option("-i", bookmarksPath,
                        "bookmarks file path; use -g instead if you don't know its location")
             ->group("Input");

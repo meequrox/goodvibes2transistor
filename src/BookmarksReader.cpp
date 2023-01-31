@@ -1,9 +1,9 @@
-#include "ConfigReader.hpp"
+#include "BookmarksReader.hpp"
 
 #include <exception>
 #include <iostream>
 
-ConfigReader::ConfigReader(const std::string& path) noexcept(false) {
+BookmarksReader::BookmarksReader(const std::string& path) noexcept(false) {
     if (path.substr(path.find_last_of(".")) != ".xml")
         throw std::invalid_argument(path + " is not an XML file.");
 
@@ -14,7 +14,7 @@ ConfigReader::ConfigReader(const std::string& path) noexcept(false) {
     stations = doc.FirstChildElement("Stations");
 }
 
-ConfigReader::stationsList ConfigReader::getStationsList() const {
+BookmarksReader::stationsList BookmarksReader::getStationsList() const {
     stationsList v;
     const tinyxml2::XMLElement* station = stations->FirstChildElement("Station");
 
@@ -30,7 +30,7 @@ ConfigReader::stationsList ConfigReader::getStationsList() const {
     return v;
 }
 
-void ConfigReader::printStations(bool verbose) const {
+void BookmarksReader::printStations(bool verbose) const {
     const stationsList stations = this->getStationsList();
 
     if (verbose) {
@@ -39,5 +39,5 @@ void ConfigReader::printStations(bool verbose) const {
         for (const auto& pair : stations) std::cout << pair.first << ": " << pair.second << std::endl;
     }
 
-    std::cout << "Read " << stations.size() << " stations from config" << std::endl;
+    std::cout << "Read " << stations.size() << " stations from bookmarks file" << std::endl;
 }

@@ -13,11 +13,7 @@ class GoodvibesReader : public BookmarksReader {
    public:
     GoodvibesReader(const std::string& path);
 
-    /* Returns vector with pairs:
-     * pair.first is station name
-     * pair.second is station uri */
     stationsList getStationsList() const override;
-
     void printStations(bool verbose) const override;
 };
 

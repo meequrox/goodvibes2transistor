@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "../include/zipper.h"
+#include "BookmarksReader.hpp"
 
 namespace fs = std::filesystem;
 

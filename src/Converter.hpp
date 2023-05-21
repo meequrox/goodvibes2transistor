@@ -3,7 +3,7 @@
 
 #include <nlohmann/json.hpp>
 
-#include "BookmarksReader.hpp"
+class BookmarksReader;
 
 class Converter {
    private:

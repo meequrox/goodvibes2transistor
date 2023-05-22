@@ -1,6 +1,8 @@
 # radio2transistor
 
-Convert bookmarks from desktop radio apps to Android Transistor radio app via backup archive.
+### Transistor v4.1.5 is not supported atm, use [v4.1.4](https://codeberg.org/y20k/transistor/releases/tag/v4.1.4)
+
+Convert bookmarks from desktop radio apps to Android [Transistor](https://codeberg.org/y20k/transistor) radio app via backup archive.
 
 Currently supported:
 - [Goodvibes](https://gitlab.com/goodvibes/goodvibes)

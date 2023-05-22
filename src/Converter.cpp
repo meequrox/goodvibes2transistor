@@ -11,14 +11,15 @@
 
 namespace fs = std::filesystem;
 
-constexpr char backupDirName[] = "transistor_backup";
-constexpr char collectionDirName[] = "collection";
-constexpr char collectionFileName[] = "collection";
-constexpr char nomediaFileName[] = ".nomedia";
+#define COLLECTION_DIRNAME "collection"
+#define COLLECTION_FILENAME "collection"
+#define COLLECTION_JSONPATH COLLECTION_DIRNAME "/" COLLECTION_FILENAME ".json"
+#define COLLECTION_M3UPATH COLLECTION_DIRNAME "/" COLLECTION_FILENAME ".m3u"
 
-constexpr char collectionJsonPath[] = "collection/collection.json";
-constexpr char collectionM3uPath[] = "collection/collection.m3u";
-constexpr char zipName[] = "transistor_backup.zip";
+#define BACKUP_DIRNAME "transistor_backup"
+#define COLLECTION_ZIPNAME BACKUP_DIRNAME ".zip"
+
+#define NOMEDIA_FILENAME ".nomedia"
 
 static std::string getCurrentDate() {
     constexpr size_t strSize = std::size("dd/mm/yy hh:mm am");
@@ -100,10 +101,10 @@ Converter::Converter(const BookmarksReader& _bookmarksReader)
 
 static void createCollectionDir() {
     std::string sep(1, fs::path::preferred_separator);
-    std::string path = fs::current_path().generic_string() + sep + backupDirName;
+    std::string path = fs::current_path().generic_string() + sep + BACKUP_DIRNAME;
     fs::create_directory(path);
 
-    path += sep + collectionDirName;
+    path += sep + COLLECTION_DIRNAME;
     fs::create_directory(path);
 }
 
@@ -111,8 +112,8 @@ void Converter::dumpJSON(bool verbose) const {
     if (verbose) std::cout << std::endl << "JSON:" << std::endl << bookmarksJSON.dump(2) << std::endl;
 
     std::string sep(1, fs::path::preferred_separator);
-    std::string path = fs::current_path().generic_string() + sep + backupDirName + sep +
-                       collectionDirName + sep + collectionFileName + ".json";
+    std::string path = fs::current_path().generic_string() + sep + BACKUP_DIRNAME + sep +
+                       COLLECTION_DIRNAME + sep + COLLECTION_FILENAME + ".json";
 
     std::ofstream file(path);
 
@@ -130,8 +131,8 @@ void Converter::dumpM3U(bool verbose) const {
     if (verbose) std::cout << std::endl << "M3U:" << std::endl << bookmarksM3U << std::endl;
 
     std::string sep(1, fs::path::preferred_separator);
-    std::string path = fs::current_path().generic_string() + sep + backupDirName + sep +
-                       collectionDirName + sep + collectionFileName + ".m3u";
+    std::string path = fs::current_path().generic_string() + sep + BACKUP_DIRNAME + sep +
+                       COLLECTION_DIRNAME + sep + COLLECTION_FILENAME + ".m3u";
 
     std::ofstream file(path);
 
@@ -147,7 +148,7 @@ void Converter::dumpM3U(bool verbose) const {
 
 static void dumpNomedia() {
     std::string sep(1, fs::path::preferred_separator);
-    std::string path = fs::current_path().generic_string() + sep + backupDirName + sep + ".nomedia";
+    std::string path = fs::current_path().generic_string() + sep + BACKUP_DIRNAME + sep + ".nomedia";
 
     std::ofstream file(path);
 
@@ -161,7 +162,7 @@ static void dumpNomedia() {
 
 void Converter::dumpCollection(bool archive, bool verbose) const {
     if (archive) {
-        zipper::Zip zip(zipName);
+        zipper::Zip zip(COLLECTION_ZIPNAME);
 
         if (verbose) {
             std::cout << std::endl << "JSON:" << std::endl << bookmarksJSON.dump(2) << std::endl;
@@ -169,17 +170,17 @@ void Converter::dumpCollection(bool archive, bool verbose) const {
         }
 
         if (!zip.is_open()) {
-            std::cout << "Can't create backup archive: " << zipName << std::endl;
+            std::cout << "Can't create backup archive: " << COLLECTION_ZIPNAME << std::endl;
             return;
         }
 
-        zip.add_dir(collectionDirName);
-        zip.add_file(collectionJsonPath, bookmarksJSON.dump());
-        zip.add_file(collectionM3uPath, bookmarksM3U + "\n");
-        zip.add_file(nomediaFileName, std::string(1, '\x00'));
+        zip.add_dir(COLLECTION_DIRNAME);
+        zip.add_file(COLLECTION_JSONPATH, bookmarksJSON.dump());
+        zip.add_file(COLLECTION_M3UPATH, bookmarksM3U + "\n");
+        zip.add_file(NOMEDIA_FILENAME, std::string(1, '\x00'));
         zip.close();
 
-        std::cout << "Collection is archived to " << zipName << std::endl;
+        std::cout << "Collection is archived to " << COLLECTION_ZIPNAME << std::endl;
     } else {
         createCollectionDir();
 

@@ -1,13 +1,10 @@
 # radio2transistor
 
-### Transistor v4.1.5 is not supported atm, use [v4.1.4](https://codeberg.org/y20k/transistor/releases/tag/v4.1.4)
-
 Convert bookmarks from desktop radio apps to Android [Transistor](https://codeberg.org/y20k/transistor) radio app via backup archive.
 
 Currently supported:
 - [Goodvibes](https://gitlab.com/goodvibes/goodvibes)
 - [Radiotray-NG](https://github.com/ebruck/radiotray-ng)
-
 
 ## Screenshots
 
@@ -27,7 +24,9 @@ You need to install this libraries first:
 ```bash
 git clone https://github.com/meequrox/radio2transistor.git
 
-cd radio2transistor/build
+cd radio2transistor
+
+mkdir build && cd build
 
 cmake ..
 
@@ -57,7 +56,7 @@ Note that without `-a` flag program will create __transistor_backup__ directory 
 
 It is easy to create reader for any app.
 
-__AppNameReader.hpp__:
+__<AppName>Reader.hpp__:
 ```cpp
 #include "BookmarksReader.hpp"
 
@@ -72,7 +71,7 @@ class AppNameReader : public BookmarksReader {
 };
 ```
 
-__AppNameReader.cpp__:
+__<AppName>Reader.cpp__:
 ```cpp
 AppNameReader::AppNameReader(const std::string& path) noexcept(false) {
     if (path.substr(path.find_last_of(".")) != ".EXT")

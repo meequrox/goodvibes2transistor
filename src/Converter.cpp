@@ -53,8 +53,7 @@ void Converter::buildBookmarksJSON() {
 
         // Default values
         stationJSON["homepage"] = "";
-        stationJSON["image"] =
-            "android.resource://org.y20k.transistor/drawable/ic_default_station_image_24dp";
+        stationJSON["image"] = "";
         stationJSON["imageColor"] = -1;
         stationJSON["imageManuallySet"] = false;
         stationJSON["nameManuallySet"] = true;
@@ -63,8 +62,7 @@ void Converter::buildBookmarksJSON() {
         stationJSON["radioBrowserStationUuid"] = "";
         stationJSON["remoteImageLocation"] = "";
         stationJSON["remoteStationLocation"] = "";
-        stationJSON["smallImage"] =
-            "android.resource://org.y20k.transistor/drawable/ic_default_station_image_24dp";
+        stationJSON["smallImage"] = "";
         stationJSON["starred"] = false;
         stationJSON["stream"] = 0;
         stationJSON["streamContent"] = "audio/mpeg";

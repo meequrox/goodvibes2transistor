@@ -15,7 +15,7 @@ Currently supported:
 
 ## Installation
 
-You need to install this libraries first:
+You need to install these libraries first:
 - TinyXML-2 (Debian: `libtinyxml2-dev`, Arch: `tinyxml2`)
 - nlohmann/json (Debian: `nlohmann-json-dev`, Arch: `nlohmann-json`)
 - CLI11 (Debian: `libcli11-dev`, Arch: `cli11`)
@@ -56,7 +56,7 @@ Note that without `-a` flag program will create __transistor_backup__ directory 
 
 It is easy to create reader for any app.
 
-__<AppName>Reader.hpp__:
+__\<AppName>Reader.hpp__:
 ```cpp
 #include "BookmarksReader.hpp"
 
@@ -71,7 +71,7 @@ class AppNameReader : public BookmarksReader {
 };
 ```
 
-__<AppName>Reader.cpp__:
+__\<AppName>Reader.cpp__:
 ```cpp
 AppNameReader::AppNameReader(const std::string& path) noexcept(false) {
     if (path.substr(path.find_last_of(".")) != ".EXT")

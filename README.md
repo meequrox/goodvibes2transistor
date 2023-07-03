@@ -1,6 +1,6 @@
 # radio2transistor
 
-Convert bookmarks from desktop radio apps to Android [Transistor](https://codeberg.org/y20k/transistor) radio app via backup archive.
+Convert bookmarks from desktop radio apps to Android [Transistor](https://codeberg.org/y20k/transistor) radio app via backup archive. The [URL Radio](https://github.com/jamal2362/URL-Radio) app is also supported as it is a fork of Transistor.
 
 Currently supported:
 - [Goodvibes](https://gitlab.com/goodvibes/goodvibes)

@@ -57,8 +57,8 @@ void Converter::buildBookmarksJSON() {
         stationJSON["image"] = "";
         stationJSON["imageColor"] = -1;
         stationJSON["imageManuallySet"] = false;
+        stationJSON["isPlaying"] = false;
         stationJSON["nameManuallySet"] = true;
-        stationJSON["playbackState"] = 1;
         stationJSON["radioBrowserChangeUuid"] = "";
         stationJSON["radioBrowserStationUuid"] = "";
         stationJSON["remoteImageLocation"] = "";

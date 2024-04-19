@@ -34,3 +34,4 @@
 # Qt Creator files
 build/
 CMakeLists.txt.user*
+.idea/

@@ -1,0 +1,29 @@
+---
+Checks: >
+  clang-diagnostic-*,
+  clang-analyzer-*,
+  *,
+  -altera-*,
+  -fuchsia-*,
+  -llvmlibc-*,
+  -llvm-header-guard,
+  -modernize-use-nodiscard,
+  -modernize-use-trailing-return-type,
+  -cppcoreguidelines-owning-memory,
+  -cppcoreguidelines-pro-bounds-pointer-arithmetic,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -readability-identifier-length,
+  -readability-magic-numbers,
+  -bugprone-exception-escape,
+  -*-easily-swappable-parameters,
+  -*-convert-member-functions-to-static,
+  -readability-implicit-bool-conversion,
+  -*-narrowing-conversions,
+  -*-non-private-member-variables-in-classes,
+  -*-avoid-const-or-ref-data-members,
+  -*-build-using-namespace
+WarningsAsErrors: '*'
+HeaderFilterRegex: '.*/(builders|openers|app)/'
+AnalyzeTemporaryDtors: false
+FormatStyle: file
+...

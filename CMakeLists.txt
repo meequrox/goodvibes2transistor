@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(random_video_opener)
+project(random_video_opener VERSION 1.0.0)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)

@@ -31,7 +31,7 @@ cmake --preset=release
 cmake --build --preset=release
 ```
 
-The compiled files will be located in the `build/release/bin` Directory.
+The compiled files will be located in the `build/release/bin` directory.
 
 ## Usage
 

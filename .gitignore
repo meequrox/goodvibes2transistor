@@ -31,7 +31,11 @@
 *.out
 *.app
 
-# Qt Creator files
+# Artifacts
 build/
+
+# IDE files
 CMakeLists.txt.user*
 .idea/
+.xmake/
+.vscode/compile_commands.json

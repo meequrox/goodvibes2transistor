@@ -13,7 +13,7 @@
 #include "reader/goodvibes.hpp"
 #include "reader/radiotray.hpp"
 #include "reader/reader.hpp"
-#include "zipper.h"
+#include "zipper/zipper.h"
 
 class App {
    public:

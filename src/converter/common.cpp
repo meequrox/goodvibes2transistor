@@ -1,11 +1,11 @@
 #include "converter/common.hpp"
 
-#include <uuid/uuid.h>
-
 #include <array>
 #include <ctime>
 #include <nlohmann/json.hpp>
 #include <string>
+#include <uuid_v4.h>
+#include <random>
 
 #include "reader/reader.hpp"
 
@@ -19,19 +19,6 @@ std::string date_now() {
 
     return {str.data()};
 }
-
-std::string uuid4() {
-    constexpr size_t size = std::size("00011122-2333-4445-5566-777888999000");
-    std::array<char, size> str{};
-
-    uuid_t uuid;
-    auto* uuid_p = static_cast<unsigned char*>(uuid);
-
-    uuid_generate(uuid_p);
-    uuid_unparse_lower(uuid_p, str.data());
-
-    return {str.data()};
-}
 }  // namespace
 
 namespace r2t::converter {
@@ -41,37 +28,38 @@ Common::Common(const reader::Reader& reader) : reader_(reader), json_(nullptr) {
 }
 
 void Common::build_json() {
+    UUIDv4::UUIDGenerator<std::mt19937_64> uuid_generator;
+    const r2t::reader::Reader::Stations stations = reader_.read();
+
     json_["modificationDate"] = date_now();
-    json_["stations"];
     json_["version"] = 0;
+    json_["stations"];
+    
+    for (size_t i = 0; i < stations.size(); ++i) {
+        nlohmann::json station(nullptr);
 
-    size_t i = 0;
-    for (const auto& station : reader_.read()) {
-        nlohmann::json json(nullptr);
-
-        json["modificationDate"] = json_["modificationDate"];
-        json["name"] = station.first;
-        json["streamUris"][0] = station.second;
-        json["uuid"] = uuid4();
+        station["modificationDate"] = json_["modificationDate"];
+        station["name"] = stations[i].first;
+        station["streamUris"][0] = stations[i].second;
+        station["uuid"] = uuid_generator.getUUID().bytes();
 
         // Default
-        json["homepage"] = "";
-        json["image"] = "";
-        json["imageColor"] = -1;
-        json["imageManuallySet"] = false;
-        json["isPlaying"] = false;
-        json["nameManuallySet"] = true;
-        json["radioBrowserChangeUuid"] = "";
-        json["radioBrowserStationUuid"] = "";
-        json["remoteImageLocation"] = "";
-        json["remoteStationLocation"] = "";
-        json["smallImage"] = "";
-        json["starred"] = false;
-        json["stream"] = 0;
-        json["streamContent"] = "audio/mpeg";
+        station["homepage"] = "";
+        station["image"] = "";
+        station["imageColor"] = -1;
+        station["imageManuallySet"] = false;
+        station["isPlaying"] = false;
+        station["nameManuallySet"] = true;
+        station["radioBrowserChangeUuid"] = "";
+        station["radioBrowserStationUuid"] = "";
+        station["remoteImageLocation"] = "";
+        station["remoteStationLocation"] = "";
+        station["smallImage"] = "";
+        station["starred"] = false;
+        station["stream"] = 0;
+        station["streamContent"] = "audio/mpeg";
 
-        json_["stations"][i] = json;
-        i++;
+        json_["stations"][i] = station;
     }
 }
 

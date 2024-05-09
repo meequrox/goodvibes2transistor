@@ -99,7 +99,7 @@ class App {
         } else if (program == "Radiotray-NG") {
             path += config_home + std::string("/radiotray-ng/bookmarks.json");
         } else {
-            return "program is not supported";
+            return program + " is not supported";
         }
 
         return std::filesystem::is_regular_file(path) ? path : "not found";
@@ -136,8 +136,14 @@ class App {
 };
 
 int main(int argc, char** argv) {
+#if !defined(__unix) && !defined(__unix__)
+    std::cout << "Goodvibes is not supported on Windows\n";
+    std::cout << "Radiotray-NG is not supported on Windows\n\n";
+    std::cout << "None of the programs are supported on Windows. Exiting.\n";
+#else
     App app(argc, argv);
     app.run();
+#endif
 
     return EXIT_SUCCESS;
 }

@@ -2,9 +2,9 @@
 
 Convert bookmarks from desktop radio apps to Android [Transistor](https://codeberg.org/y20k/transistor) radio app via backup archive. The [URL Radio](https://github.com/jamal2362/URL-Radio) app is also supported as it is a fork of Transistor.
 
-Currently supported:
+Currently supported programs:
 
-- [Goodvibes](https://gitlab.com/GOODVIBES/GOODVIBES)
+- [Goodvibes](https://gitlab.com/goodvibes/goodvibes)
 - [Radiotray-NG](https://github.com/ebruck/radiotray-ng)
 
 ## Screenshots
@@ -15,19 +15,19 @@ Currently supported:
 
 ## Installation
 
-You need to install these libraries manually:
+On GNU/Linux you need to install these libraries manually:
 
-- TinyXML-2 (Debian: `libtinyxml2-dev`, Arch: `tinyxml2`)
+- TinyXML2 (Debian: `libtinyxml2-dev`, Arch: `tinyxml2`)
 - Minizip (Debian: `libminizip-dev`, Arch: `minizip`)
 
-The [xmake](https://xmake.io/#/guide/installation) build system is used
+On Windows, these libraries will be downloaded automatically, as [xmake](https://xmake.io/#/guide/installation) is used.
 
 ```bash
 git clone https://github.com/meequrox/radio2transistor.git
 
 cd radio2transistor
 
-xmake require -y
+xmake require
 
 xmake build
 ```

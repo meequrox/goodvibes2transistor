@@ -9,6 +9,7 @@ set_optimize("fastest")
 if is_os("windows") then
     -- Use MSVC toolchain by default
     -- https://visualstudio.microsoft.com/ru/visual-cpp-build-tools/
+    add_defines("_CRT_SECURE_NO_WARNINGS")
 
     add_requires("tinyxml2")
     add_requires("minizip")

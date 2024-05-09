@@ -8,8 +8,6 @@
 #include <reader/reader.hpp>
 #include <string>
 
-#define _CRT_SECURE_NO_WARNINGS
-
 namespace {
 std::string date_now() {
     constexpr size_t size = std::size("dd/mm/yy hh:mm am");

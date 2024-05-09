@@ -21,4 +21,4 @@ end
 add_requires("cli11", "nlohmann_json", "uuid_v4")
 
 includes("external")
-includes("src")
+includes("radio2transistor")

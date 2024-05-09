@@ -1,10 +1,10 @@
-#include "reader/radiotray.hpp"
-
 #include <fstream>
 #include <iostream>
 #include <nlohmann/json.hpp>
+#include <reader/radiotray.hpp>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 namespace r2t::reader {
 Radiotray::Radiotray(const std::string& path) noexcept(false) {
@@ -24,7 +24,7 @@ Radiotray::Radiotray(const std::string& path) noexcept(false) {
     }
 }
 
-Radiotray::Stations Radiotray::read() const {
+Stations Radiotray::read() const {
     Stations v;
 
     for (const auto& group : bookmarks_) {

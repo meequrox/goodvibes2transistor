@@ -1,9 +1,9 @@
-#include "reader/goodvibes.hpp"
-
 #include <tinyxml2.h>
 
+#include <reader/goodvibes.hpp>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 namespace r2t::reader {
 Goodvibes::Goodvibes(const std::string& path) noexcept(false) {
@@ -20,7 +20,7 @@ Goodvibes::Goodvibes(const std::string& path) noexcept(false) {
     stations_ = doc_.FirstChildElement("Stations");
 }
 
-Goodvibes::Stations Goodvibes::read() const {
+Stations Goodvibes::read() const {
     Stations v;
     const tinyxml2::XMLElement* station = stations_->FirstChildElement("Station");
 

@@ -1,13 +1,14 @@
-#include "converter/common.hpp"
+#include <uuid_v4.h>
 
 #include <array>
+#include <converter/common.hpp>
 #include <ctime>
 #include <nlohmann/json.hpp>
-#include <string>
-#include <uuid_v4.h>
 #include <random>
+#include <reader/reader.hpp>
+#include <string>
 
-#include "reader/reader.hpp"
+#define _CRT_SECURE_NO_WARNINGS
 
 namespace {
 std::string date_now() {
@@ -29,12 +30,12 @@ Common::Common(const reader::Reader& reader) : reader_(reader), json_(nullptr) {
 
 void Common::build_json() {
     UUIDv4::UUIDGenerator<std::mt19937_64> uuid_generator;
-    const r2t::reader::Reader::Stations stations = reader_.read();
+    const r2t::Stations stations = reader_.read();
 
     json_["modificationDate"] = date_now();
     json_["version"] = 0;
     json_["stations"];
-    
+
     for (size_t i = 0; i < stations.size(); ++i) {
         nlohmann::json station(nullptr);
 

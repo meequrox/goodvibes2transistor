@@ -1,15 +1,15 @@
-#ifndef R2T_READER_HPP
-#define R2T_READER_HPP
+#pragma once
 
 #include <string>
 #include <vector>
 
-namespace r2t::reader {
+namespace r2t {
+using Station = std::pair<std::string, std::string>;
+using Stations = std::vector<Station>;
+
+namespace reader {
 class Reader {
    public:
-    using Station = std::pair<std::string, std::string>;
-    using Stations = std::vector<Station>;
-
     /* Returns vector with pairs:
      * pair.first is station name
      * pair.second is station URI */
@@ -17,6 +17,5 @@ class Reader {
 
     virtual ~Reader() = default;
 };
-}  // namespace r2t::reader
-
-#endif
+}  // namespace reader
+}  // namespace r2t

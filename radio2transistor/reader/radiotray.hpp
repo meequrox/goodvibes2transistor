@@ -1,10 +1,8 @@
-#ifndef R2T_RADIOTRAY_HPP
-#define R2T_RADIOTRAY_HPP
+#pragma once
 
 #include <nlohmann/json.hpp>
+#include <reader/reader.hpp>
 #include <string>
-
-#include "reader/reader.hpp"
 
 namespace r2t::reader {
 class Radiotray : public Reader {
@@ -17,5 +15,3 @@ class Radiotray : public Reader {
     nlohmann::json bookmarks_;
 };
 }  // namespace r2t::reader
-
-#endif

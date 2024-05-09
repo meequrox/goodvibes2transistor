@@ -1,9 +1,8 @@
-#ifndef R2T_COMMON_HPP
-#define R2T_COMMON_HPP
+#pragma once
 
 #include <nlohmann/json.hpp>
-
-#include "reader/reader.hpp"
+#include <reader/reader.hpp>
+#include <string>
 
 namespace r2t::converter {
 class Common {
@@ -22,5 +21,3 @@ class Common {
     void build_m3u();
 };
 }  // namespace r2t::converter
-
-#endif

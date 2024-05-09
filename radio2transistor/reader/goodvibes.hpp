@@ -1,11 +1,9 @@
-#ifndef R2T_GOODVIBES_HPP
-#define R2T_GOODVIBES_HPP
+#pragma once
 
 #include <tinyxml2.h>
 
+#include <reader/reader.hpp>
 #include <string>
-
-#include "reader/reader.hpp"
 
 namespace r2t::reader {
 class Goodvibes : public Reader {
@@ -19,5 +17,3 @@ class Goodvibes : public Reader {
     const tinyxml2::XMLElement* stations_;
 };
 }  // namespace r2t::reader
-
-#endif

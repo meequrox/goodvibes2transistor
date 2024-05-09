@@ -10,7 +10,7 @@ target("radio2transistor")
 target("converter")
     set_kind("static")
     add_files("converter/*.cpp")
-    add_includedirs("$(projectdir)/include", {public = true})
+    add_includedirs("$(projectdir)/radio2transistor", {public = true})
 
     add_packages("nlohmann_json", "uuid_v4")
 
@@ -18,6 +18,6 @@ target("converter")
 target("reader")
     set_kind("static")
     add_files("reader/*.cpp")
-    add_includedirs("$(projectdir)/include", {public = true})
+    add_includedirs("$(projectdir)/radio2transistor", {public = true})
 
     add_packages("nlohmann_json", "tinyxml2")

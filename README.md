@@ -21,6 +21,7 @@ On GNU/Linux you need to install these libraries manually:
 - Minizip (Debian: `libminizip-dev`, Arch: `minizip`)
 
 On Windows, these libraries will be downloaded automatically, as [xmake](https://xmake.io/#/guide/installation) is used.
+If Visual Studio is not installed, you need to install [MSVC compiler](https://visualstudio.microsoft.com/visual-cpp-build-tools/) manually.
 
 ```bash
 git clone https://github.com/meequrox/radio2transistor.git

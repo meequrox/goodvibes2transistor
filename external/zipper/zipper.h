@@ -14,6 +14,7 @@
 #include <minizip/zip.h>
 
 #include <cassert>
+#include <cstdint>
 #include <cstring>
 #include <fstream>
 #include <functional>

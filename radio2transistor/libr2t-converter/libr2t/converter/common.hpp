@@ -1,7 +1,7 @@
 #pragma once
 
+#include <libr2t/reader/reader.hpp>
 #include <nlohmann/json.hpp>
-#include <reader/reader.hpp>
 #include <string>
 
 namespace r2t::converter {

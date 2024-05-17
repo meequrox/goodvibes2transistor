@@ -3,9 +3,9 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**",
-                "${env.XMAKE_GLOBALDIR}/.xmake/packages/*/*/*/*/include"
+                "${workspaceFolder}/**"
             ],
+            "compileCommands": ".vscode/compile_commands.json",
             "defines": [],
             "cStandard": "c17",
             "cppStandard": "c++17",

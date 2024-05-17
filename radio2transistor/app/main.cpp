@@ -1,3 +1,5 @@
+#include <zipper/zipper.h>
+
 #include <CLI/App.hpp>
 #include <CLI/CLI.hpp>
 #include <CLI/Error.hpp>
@@ -5,15 +7,13 @@
 #include <cstdlib>
 #include <filesystem>
 #include <iostream>
+#include <libr2t/converter/common.hpp>
+#include <libr2t/reader/goodvibes.hpp>
+#include <libr2t/reader/radiotray.hpp>
+#include <libr2t/reader/reader.hpp>
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <vector>
-
-#include "converter/common.hpp"
-#include "reader/goodvibes.hpp"
-#include "reader/radiotray.hpp"
-#include "reader/reader.hpp"
-#include "zipper/zipper.h"
 
 class App {
    public:

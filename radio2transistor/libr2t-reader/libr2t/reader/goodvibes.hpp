@@ -2,7 +2,7 @@
 
 #include <tinyxml2.h>
 
-#include <reader/reader.hpp>
+#include <libr2t/reader/reader.hpp>
 #include <string>
 
 namespace r2t::reader {

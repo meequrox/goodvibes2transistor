@@ -1,6 +1,6 @@
 #include <tinyxml2.h>
 
-#include <reader/goodvibes.hpp>
+#include <libr2t/reader/goodvibes.hpp>
 #include <stdexcept>
 #include <string>
 #include <vector>
